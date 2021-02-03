@@ -43,7 +43,7 @@ suppressWarnings({
                          round_if_num_(median(x,na.rm=TRUE),round_digits),
                          round_if_num_(max(x, na.rm=TRUE),round_digits),
 
-                         paste0(signif(100*mean(is.na(x)),round_digits),'%')
+                         prettyNum(signif(100*mean(is.na(x)),round_digits), big.mark=',')
                        )
                      }))
 
@@ -80,7 +80,7 @@ suppressWarnings({
                          paste0(prettyNum(min(nch, na.rm=TRUE), big.mark=','),' char'),
                          paste0(prettyNum(median(nch, na.rm=TRUE), big.mark=','),' char'),
                          paste0(prettyNum(max(nch, na.rm=TRUE), big.mark=','),' char'),
-                         paste0(signif(100*mean(is.na(x)),round_digits),'%'),
+                         prettyNum(signif(100*mean(is.na(x)),round_digits), big.mark=','),
                          exmpl
                        )
                      }))
@@ -107,7 +107,7 @@ suppressWarnings({
                  function(x){
                    c(
                      paste0('\"TRUE\" fraction ',signif(mean(x,na.rm=TRUE), round_digits)),
-                     paste0(signif(100*mean(is.na(x)),round_digits),'%')
+                     prettyNum(signif(100*mean(is.na(x)),round_digits), big.mark=',')
                    )
                  })
 
@@ -122,6 +122,8 @@ suppressWarnings({
       )%>%
       select(names(ans))
   }
+
+  ans=ans%>%rename(c('missingness %'='missingness'))
 
   if(show_size){
     ans=tibble(key=paste0('DATA SIZE: ',paste(prettyNum(dim(dat), big.mark=','), collapse=' x ')))%>%
