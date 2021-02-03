@@ -22,7 +22,7 @@ describe=function(dat,
 ){
 
   require(tidyverse)
-
+suppressWarnings({
   round_if_num_=function(x, digits){
     if(class(x)[1]=='numeric'){
       prettyNum(round(x, digits),big.mark=',')
@@ -128,6 +128,6 @@ describe=function(dat,
       bind_rows(ans)%>%
       select(names(ans))
   }
-
+})
   return(ans)
 }
