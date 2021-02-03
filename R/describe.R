@@ -2,7 +2,7 @@
 #'
 #' Make a summary dataframe for a dataframe.
 #'
-#' @param dat - dataframe or tibble
+#' @param dat dataframe or tibble
 #' @param screen_vars vector of variable names whose values should not be show in the summary
 #' @param n_example_values max number of value examples to show
 #' @param max_nchar max nchar length of value examples
@@ -12,7 +12,7 @@
 #' @return a tibble
 #' @export
 #'
-#' @examples \code{describe(tibble(x=c(1,2,3)))}
+#' @examples describe(tibble(x=c(1,2,3)))
 describe=function(dat,
                   screen_vars=c('username','ip'),
                   n_example_values=5,
