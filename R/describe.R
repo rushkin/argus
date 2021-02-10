@@ -133,3 +133,48 @@ suppressWarnings({
 })
   return(ans)
 }
+
+
+#' to_row
+#'
+#' Convert the summary table (as produced by describe()) to a 1-row wide format, adding the timestamp column
+#'
+#' @param df - table produced by describe()
+#' @param timestamp - if not given, will be Sys.time()
+#'
+#' @return a tibble
+#' @export
+#'
+#' @examples to_row(describe(tibble(x=c(1,2,3))))
+to_row=function(df, timestamp=NULL){
+
+  require(tidyverse)
+
+  if(is.null(timestamp)) timestamp=Sys.time()
+
+  df%>%
+    drop_na(type)%>%
+    select(-type)%>%
+    gather(key='k', value='v', -key)%>%
+    mutate(key=paste0(key,'_',k)%>%
+             str_replace_all('[[:punct:]]','_')%>%
+             str_replace_all(' ','_')%>%
+             str_replace_all('_+','_')
+    )%>%
+    select(-k)%>%
+    mutate(v=v%>%str_remove_all(' char$')%>%str_remove_all(','))%>%
+    spread(key='key', value='v')%>%
+    mutate_all(
+
+      function(x){
+        temp=as.POSIXct(x, optional=TRUE)
+        if(!is.na(temp)) return(temp)
+        temp=as.numeric(x)
+        if(!is.na(temp)) return(temp)
+        return(x)
+      }
+
+    )%>%
+    mutate(timestamp=timestamp)
+
+}
