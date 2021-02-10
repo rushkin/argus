@@ -151,7 +151,7 @@ to_row=function(df, timestamp=NULL){
   require(tidyverse)
 
   if(is.null(timestamp)) timestamp=Sys.time()
-
+  suppressWarnings({
   df%>%
     drop_na(type)%>%
     select(-type)%>%
@@ -176,5 +176,5 @@ to_row=function(df, timestamp=NULL){
 
     )%>%
     mutate(timestamp=timestamp)
-
+  })
 }
