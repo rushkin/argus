@@ -4,15 +4,18 @@
 #'
 #' @param df tibble, as multiple rows produced by to_row()
 #' @param level value between 0 and 1, confidence level used for prediction confidence interval
-#' @param eps a small technical correction
 #'
 #' @return a named list (names are variables from df, other than timestamp), each element is a list with components fit (prediction value), lwr, upr (lower and upper limits of prediction confindence interval), obs (observed value), flag (1 if obs>upr, -1 if obs<lwr, 0 otherwise).
 #' @export
 #'
-flag=function(df, level=0.9, eps=1e-6){
+flag=function(df, level=0.9){
 
+  eps=1e-6
+
+  suppressWarnings({
   df=df%>%arrange(desc(timestamp))%>%
     mutate_all(as.numeric)
+  })
 
   tr=df%>%slice(-1)
   va=df%>%slice(1)
